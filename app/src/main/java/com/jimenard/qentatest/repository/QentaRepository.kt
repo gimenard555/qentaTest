@@ -24,7 +24,7 @@ class QentaRepository(context: Context) {
         emit(Resource.loading(data = null))
         try {
             val imagesList = if (Utils.internetIsConnected()) {
-                val serviceList =  quentaService.getQuentaImage(searchData, page).images!!
+                val serviceList = quentaService.getQuentaImage(searchData, page).images!!
                 quentaDao.insertRows(serviceList.map { imageS ->
                     QentaEntity(
                         webServiceId = imageS.id!!,
@@ -38,7 +38,7 @@ class QentaRepository(context: Context) {
             } else {
                 entityToItem(quentaDao.getImagesFromDatabase())
             }
-            System.out.println(imagesList)
+            System.out.println("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + imagesList)
             emit(Resource.success(data = imagesList))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
@@ -68,8 +68,8 @@ class QentaRepository(context: Context) {
         serviceI.map {
             ItemImage(
                 id = it.id!!,
-                previewImage = Utils.getBase64EncodedImage(it.previewImage),
-                userName = Utils.getBase64EncodedImage(it.user),
+                previewImage = it.previewImage ?: "",
+                userName = it.user ?: "",
                 commentsText = it.comments ?: ""
             )
         }
